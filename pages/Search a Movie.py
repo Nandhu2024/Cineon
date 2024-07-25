@@ -4,7 +4,7 @@ import streamlit as st
 import sys
 print(sys.executable)
 
-from cinemagoer import Cinemagoer
+from imdb import Cinemagoer
 
 
 # Create an instance of the IMDb class
