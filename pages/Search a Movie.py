@@ -1,10 +1,14 @@
-import pickle
+
 import streamlit as st
-import requests
-from imdb import IMDb
+
+import sys
+print(sys.executable)
+
+from imdb import Cinemagoer
+
 
 # Create an instance of the IMDb class
-ia = IMDb()
+ia = Cinemagoer()
 
 st.title("IMDb Movie Data Fetcher")
 
