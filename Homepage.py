@@ -7,5 +7,7 @@ st.set_page_config(
     page_title="CineOn",
     page_icon="🎥"
 )
-st.title('Homepage is under construction,please click the arrow above or left side of this message to navigate to other pages')
+st.title('Welcome to CiNeon')
+st.text('Latest News')
+st.text('Coming Soon')
 st.sidebar.success('Built with Streamlit')
