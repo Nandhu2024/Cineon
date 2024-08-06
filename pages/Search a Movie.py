@@ -7,7 +7,7 @@ ia = Cinemagoer()
 
 # Function to fetch the poster URL from TMDb
 def fetch_poster(movie_title):
-    search_url = f"https://api.themoviedb.org/3/search/movie?api_key=8265bd1679663a7ea12ac168da84d2e8&query={movie_title}"
+    search_url = f"https://api.themoviedb.org/3/search/movie?api_key=8265bd1679663a7ea12ac168da84d2e8&query={movie_title}&language=en-US"
     response = requests.get(search_url)
     data = response.json()
     
@@ -47,7 +47,7 @@ if st.button("Fetch Movie Data"):
             }
 
             # Fetch the poster URL
-            poster_url = fetch_poster(imdb_id)
+            poster_url = fetch_poster(movie_title)
 
             # Display movie data
             st.subheader(f"Title: {movie_data.get('title')}")
