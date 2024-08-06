@@ -7,7 +7,7 @@ ia = Cinemagoer()
 
 # Function to fetch the poster URL from TMDb
 def fetch_poster(imdb_id):
-    search_url = f"https://api.themoviedb.org/3/find/{imdb_id}?api_key=8265bd1679663a7ea12ac168da84d2e8&external_source=imdb_id"
+    search_url = f"https://api.themoviedb.org/3/search/movie?api_key=8265bd1679663a7ea12ac168da84d2e8&query=Avatar"
     response = requests.get(search_url)
     data = response.json()
     
