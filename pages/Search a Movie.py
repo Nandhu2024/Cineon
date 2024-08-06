@@ -11,8 +11,7 @@ def fetch_poster(movie_title):
     response = requests.get(search_url)
     data = response.json()
     
-    # Debugging: Print the response from TMDb API
-    st.write("TMDb API response:", data)
+    
     
     if data.get('results'):
         poster_path = data['results'][0].get('poster_path')
@@ -51,6 +50,10 @@ if st.button("Fetch Movie Data"):
 
             # Display movie data
             st.subheader(f"Title: {movie_data.get('title')}")
+            if poster_url:
+                st.image(poster_url, caption='Movie Poster')
+            else:
+                st.text("Poster not available.")
             st.text(f"Year: {movie_data.get('year')}")
             st.text(f"Genre: {', '.join(movie_data.get('genre', []))}")
             st.text(f"Director: {', '.join(movie_data.get('director', []))}")
