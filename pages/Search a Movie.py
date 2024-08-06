@@ -14,8 +14,8 @@ def fetch_poster(imdb_id):
     # Debugging: Print the response from TMDb API
     st.write("TMDb API response:", data)
     
-    if data.get('movie_results'):
-        poster_path = data['movie_results'][0].get('poster_path')
+    if data.get('results'):
+        poster_path = data['results'][0].get('poster_path')
         if poster_path:
             return f"https://image.tmdb.org/t/p/w500/{poster_path}"
     return None
