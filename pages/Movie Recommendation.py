@@ -1,64 +1,56 @@
+import pickle
 import streamlit as st
 import requests
-from imdb import Cinemagoer
 
-# Create an instance of the IMDb class
-ia = Cinemagoer()
+def fetch_poster(movie_id):
+    url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
+    data = requests.get(url)
+    data = data.json()
+    poster_path = data['poster_path']
+    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+    return full_path
 
-# Function to fetch the poster URL from TMDb
-def fetch_poster(imdb_id):
-    search_url = f"https://api.themoviedb.org/3/find/{imdb_id}?api_key=8265bd1679663a7ea12ac168da84d2e8&external_source=imdb_id"
-    response = requests.get(search_url)
-    data = response.json()
-    
-    # Debugging: Print the response from TMDb API
-    st.write("TMDb API response:", data)
-    
-    if data.get('movie_results'):
-        poster_path = data['movie_results'][0].get('poster_path')
-        if poster_path:
-            return f"https://image.tmdb.org/t/p/w500/{poster_path}"
-    return None
+def recommend(movie):
+    index = movies[movies['title'] == movie].index[0]
+    distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
+    recommended_movie_names = []
+    recommended_movie_posters = []
+    for i in distances[1:6]:
+        # fetch the movie poster
+        movie_id = movies.iloc[i[0]].movie_id
+        recommended_movie_posters.append(fetch_poster(movie_id))
+        recommended_movie_names.append(movies.iloc[i[0]].title)
 
-st.title("IMDb Movie Data Fetcher")
+    return recommended_movie_names,recommended_movie_posters
 
-movie_title = st.text_input("Enter a movie title:")
 
-if st.button("Fetch Movie Data"):
-    if not movie_title:
-        st.error("Please enter a movie title.")
-    else:
-        # Search for the movie
-        movies = ia.search_movie(movie_title)
-        if not movies:
-            st.error("Movie not found.")
-        else:
-            # Get the first movie in the search results
-            movie = ia.get_movie(movies[0].movieID)
-            imdb_id = movie.movieID  # IMDb ID for TMDb query
-            movie_data = {
-                'title': movie.get('title'),
-                'year': movie.get('year'),
-                'genre': movie.get('genres'),
-                'director': [director['name'] for director in movie.get('directors')],
-                'actors': [actor['name'] for actor in movie.get('cast')],
-                'plot': movie.get('plot outline'),
-                'rating': movie.get('rating')
-            }
+st.header('Movie  System')
+movies = pickle.load(open('movie_list.pkl','rb'))
+similarity = pickle.load(open('similarity.pkl','rb'))
 
-            # Fetch the poster URL
-            poster_url = fetch_poster(imdb_id)
+movie_list = movies['title'].values
+selected_movie = st.selectbox(
+    "Type or select a movie from the dropdown",
+    movie_list
+)
 
-            # Display movie data
-            st.subheader(f"Title: {movie_data.get('title')}")
-            st.text(f"Year: {movie_data.get('year')}")
-            st.text(f"Genre: {', '.join(movie_data.get('genre', []))}")
-            st.text(f"Director: {', '.join(movie_data.get('director', []))}")
-            st.text(f"Actors: {', '.join(movie_data.get('actors', []))}")
-            st.text(f"Plot: {movie_data.get('plot')}")
-            st.text(f"Rating: {movie_data.get('rating')}")
+if st.button('Show Recommendation'):
+    recommended_movie_names,recommended_movie_posters = recommend(selected_movie)
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.text(recommended_movie_names[0])
+        st.image(recommended_movie_posters[0])
+    with col2:
+        st.text(recommended_movie_names[1])
+        st.image(recommended_movie_posters[1])
 
-            if poster_url:
-                st.image(poster_url, caption='Movie Poster')
-            else:
-                st.text("Poster not available.")
+    with col3:
+        st.text(recommended_movie_names[2])
+        st.image(recommended_movie_posters[2])
+    with col4:
+        st.text(recommended_movie_names[3])
+        st.image(recommended_movie_posters[3])
+    with col5:
+        st.text(recommended_movie_names[4])
+        st.image(recommended_movie_posters[4])
+

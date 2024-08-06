@@ -10,7 +10,11 @@ def fetch_poster(imdb_id):
     search_url = f"https://api.themoviedb.org/3/find/{imdb_id}?api_key=8265bd1679663a7ea12ac168da84d2e8&external_source=imdb_id"
     response = requests.get(search_url)
     data = response.json()
-    if data['movie_results']:
+    
+    # Debugging: Print the response from TMDb API
+    st.write("TMDb API response:", data)
+    
+    if data.get('movie_results'):
         poster_path = data['movie_results'][0].get('poster_path')
         if poster_path:
             return f"https://image.tmdb.org/t/p/w500/{poster_path}"
