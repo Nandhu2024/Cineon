@@ -8,7 +8,7 @@ st.set_page_config(
     page_icon="🎥"
 )
 add_auth(required=True)
-st.title('Welcome to CiNeon')
+st.title('Welcome to CiNeon/this is working')
 st.text('Latest News')
 st.markdown('')
 st.markdown('')
