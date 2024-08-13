@@ -1,6 +1,7 @@
 import pickle
 import streamlit as st
 import requests
+from st_paywall import add_auth
 
 
 st.set_page_config(
@@ -9,6 +10,7 @@ st.set_page_config(
 )
 
 st.title('Welcome to CiNeon/this is working')
+add_auth(required=True)
 st.text('Latest News')
 st.markdown('')
 st.markdown('')
