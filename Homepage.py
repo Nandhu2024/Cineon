@@ -10,8 +10,8 @@ st.set_page_config(
 )
 
 st.title('Welcome to CiNeon/this is working')
-if add_auth(required=True):
-    st.write(st.session_state.email)
+add_auth(st)
+st.write(st.session_state.email)
 st.text('Latest News')
 st.markdown('')
 st.markdown('')
