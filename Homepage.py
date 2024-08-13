@@ -1,7 +1,6 @@
 import pickle
 import streamlit as st
 import requests
-import st_paywall
 from st_paywall import add_auth
 
 st.set_page_config(
